@@ -1,0 +1,58 @@
+{% extends 'Shop/base.html' %}
+{% load static %}
+{% block title %}Registration{% endblock title %}
+
+{% block main-content %}
+<div class="register-container">
+    <div class="register-card">
+        <h2>Create an Account</h2>
+        <hr>
+        
+        {% if messages %}
+        <div class="messages mt-3">
+            {% for message in messages %}
+                <div class="alert alert-info text-center p-2" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label text-start">Username</label>
+                <div class="col-sm-8">
+                    <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label text-start">Email</label>
+                <div class="col-sm-8">
+                    <input type="email" name="email" class="form-control" placeholder="Enter email address" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label text-start">Password</label>
+                <div class="col-sm-8">
+                    <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <label class="col-sm-4 col-form-label text-start">Confirm Password</label>
+                <div class="col-sm-8">
+                    <input type="password" name="confirm_password" class="form-control" placeholder="Re-enter password" required>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-center mt-3">
+              <button type="submit" class="btn btn-register px-5 text-white">Register</button>
+           </div>
+        </form>
+    </div>
+</div>
+{% endblock main-content %}
