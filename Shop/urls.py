@@ -2,6 +2,8 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from Shop import views
+from django.contrib.auth import views as auth_views
+
 
 
 urlpatterns = [
@@ -12,5 +14,9 @@ urlpatterns = [
     #user registratin
     path('registration/', views.registration, name = 'user_registration'),
     #user login
-    path('login/', views.login, name = 'user_login'),
+    path('login/', views.login_view, name = 'user_login'),
+    #logout
+    path('logout/', views.user_logout, name='userLogout'),
+    # Password change
+    path('change-password/', views.change_password, name='change_password'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

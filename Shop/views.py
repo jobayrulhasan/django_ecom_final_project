@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def show_home_page(request):
@@ -23,28 +27,85 @@ def registration(request):
 
         if password != confirm_password:
             messages.error(request, "Passwords do not match!")
-            return redirect('Shop/userregistration.html')
+            return render(request, 'Shop/userregistration.html')
 
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists!")
-            return redirect('Shop/userregistration.html')
+            return render(request, 'Shop/userregistration.html')
 
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists!")
-            return redirect('Shop/userregistration.html')
+            return render(request, 'Shop/userregistration.html')
 
         user = User(
             username=username,
             email=email,
-            password=make_password(password)  # securely hash password
+            password=make_password(password)
         )
         user.save()
 
         messages.success(request, "Account created successfully! You can now log in.")
-        return redirect('Shop/login.html')
+        #return redirect('login')
 
     return render(request, 'Shop/userregistration.html')
 
-
-def login(request):
+#user login
+def login_view(request):
+    if request.method == 'POST':
+        user_name = request.POST.get('username')
+        user_password = request.POST.get('password')
+        
+        user = authenticate(request, username=user_name, password=user_password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Login successful!")
+            return redirect('/')  # redirect to your home/dashboard page
+        else:
+            messages.error(request, "Invalid username or password.")
+    
     return render(request, 'Shop/login.html')
+
+# user logout
+def user_logout(request):
+    logout(request)
+    return redirect('/')
+
+#change password
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password', '').strip()
+        new_password = request.POST.get('new_password', '').strip()
+        confirm_password = request.POST.get('confirm_password', '').strip()
+
+        # Check old password
+        if not request.user.check_password(old_password):
+            messages.error(request, 'Old password is incorrect.')
+            return redirect('Shop/password_change.html')
+
+        # Confirm new passwords match
+        if new_password != confirm_password:
+            messages.error(request, 'New password and confirm password do not match.')
+            return redirect('Shop/password_change.html')
+
+        # Validate new password strength using Django's validators
+        try:
+            validate_password(new_password, user=request.user)
+        except ValidationError as e:
+            # e.messages is a list of human-friendly messages
+            for msg in e.messages:
+                messages.error(request, msg)
+            return redirect('Shop/password_change.html')
+
+        # Set new password (securely hashes)
+        request.user.set_password(new_password)
+        request.user.save()
+
+        # Keep the user logged in after password change
+        update_session_auth_hash(request, request.user)
+
+        messages.success(request, 'Your password has been changed successfully.')
+        return redirect('Shop/home.html')  # or any other page you want
+
+    # GET request -> show form
+    return render(request, 'Shop/password_change.html')

@@ -61,35 +61,27 @@
 
             <div class="col-lg-4 text-center text-lg-end">
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
+
                     <div class="dropdown">
-                        <a href="#" class="dropdown-toggle text-muted me-2" data-bs-toggle="dropdown"><small>
-                                USD</small></a>
+                        <a href="#" class="dropdown-toggle text-muted ms-2" data-bs-toggle="dropdown">
+                               {% if request.user.is_authenticated %}
+                                 <small><i class="fa-solid fa-right-to-bracket me-2"></i>{{request.user.username}}</small>
+                                {% else %}
+                                 <small><i class="fa fa-home me-2"></i> My Dashboard</small>
+                                {% endif %}
+                            </a>
                         <div class="dropdown-menu rounded">
-                            <a href="#" class="dropdown-item"> Euro</a>
-                            <a href="#" class="dropdown-item"> Dolar</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle text-muted mx-2" data-bs-toggle="dropdown"><small>
-                                English</small></a>
-                        <div class="dropdown-menu rounded">
-                            <a href="#" class="dropdown-item"> English</a>
-                            <a href="#" class="dropdown-item"> Turkish</a>
-                            <a href="#" class="dropdown-item"> Spanol</a>
-                            <a href="#" class="dropdown-item"> Italiano</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle text-muted ms-2" data-bs-toggle="dropdown"><small><i
-                                    class="fa fa-home me-2"></i> My Dashboard</small></a>
-                        <div class="dropdown-menu rounded">
-                            <a href="#" class="dropdown-item"> Login</a>
-                            <a href="#" class="dropdown-item"> Wishlist</a>
-                            <a href="#" class="dropdown-item"> My Card</a>
-                            <a href="#" class="dropdown-item"> Notifications</a>
-                            <a href="#" class="dropdown-item"> My Account</a>
-                            <a href="#" class="dropdown-item"> Log Out</a>
-                            <a href="{% url "user_registration" %}" class="dropdown-item"> Registration</a>
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url "userLogout" %}" class="dropdown-item"> Log Out</a>
+                                <a href="#" class="dropdown-item"> Wishlist</a>
+                                <a href="#" class="dropdown-item"> My Cart</a>
+                                <a href="#" class="dropdown-item"> Notifications</a>
+                                <a href="{% url "change_password" %}" class="dropdown-item"> Change Password</a>
+                            {% else %}
+                                <a href="{% url "user_registration" %}" class="dropdown-item"> Registration</a>
+                                <a href="{% url "user_login" %}" class="dropdown-item"> Login</a>
+                                 <a href="#" class="dropdown-item">Password Reset</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -100,7 +92,7 @@
         <div class="row gx-0 align-items-center text-center">
             <div class="col-md-4 col-lg-3 text-center text-lg-start">
                 <div class="d-inline-flex align-items-center">
-                    <a href="" class="navbar-brand p-0">
+                    <a href="{% url 'home' %}" class="navbar-brand p-0">
                         <h1 class="display-5 text-primary m-0"><i
                             class="fas fa-shopping-bag text-secondary me-2"></i>Electro</h1>
                     </a>
@@ -187,7 +179,7 @@
             </div>
             <div class="col-12 col-lg-9">
                 <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
-                    <a href="" class="navbar-brand d-block d-lg-none">
+                    <a href="{% url 'home' %}" class="navbar-brand d-block d-lg-none">
                         <h1 class="display-5 text-secondary m-0"><i
                                 class="fas fa-shopping-bag text-white me-2"></i>Electro</h1>
                         <!-- <img src="img/logo.png" alt="Logo"> -->

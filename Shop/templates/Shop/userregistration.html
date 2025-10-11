@@ -3,7 +3,7 @@
 {% block title %}Registration{% endblock title %}
 
 {% block main-content %}
-<div class="register-container">
+{% comment %} <div class="register-container">
     <div class="register-card">
         <h2>Create an Account</h2>
         <hr>
@@ -39,6 +39,7 @@
                 <label class="col-sm-4 col-form-label text-start">Password</label>
                 <div class="col-sm-8">
                     <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    <i class="fa fa-eye toggle-password position-absolute end-0 top-50 translate-middle-y me-3" data-target="new_password"></i>
                 </div>
             </div>
 
@@ -54,5 +55,91 @@
            </div>
         </form>
     </div>
+</div> {% endcomment %}
+
+
+<div class="container py-5 d-flex justify-content-center align-items-center" style="min-height: 100vh; background: #f8f9fa;">
+    <div class="card shadow-lg border-0 rounded-4" style="max-width: 600px; width: 100%;">
+        <div class="card-body p-4 p-md-5">
+            <h2 class="text-center mb-3 text-primary">Create an Account</h2>
+            <hr class="mb-4">
+
+            {% if messages %}
+            <div class="messages mb-3">
+                {% for message in messages %}
+                    <div class="alert alert-info text-center p-2" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="POST" novalidate>
+                {% csrf_token %}
+
+                <div class="row mb-3 align-items-center">
+                    <label class="col-sm-4 col-form-label fw-semibold">Username</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center">
+                    <label class="col-sm-4 col-form-label fw-semibold">Email</label>
+                    <div class="col-sm-8">
+                        <input type="email" name="email" class="form-control" placeholder="Enter email address" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3 align-items-center position-relative">
+                    <label class="col-sm-4 col-form-label fw-semibold">Password</label>
+                    <div class="col-sm-8 position-relative">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required>
+                        <i class="fa fa-eye toggle-password position-absolute end-0 top-50 translate-middle-y me-3"
+                           style="cursor: pointer;" data-target="password"></i>
+                    </div>
+                </div>
+
+                <div class="row mb-4 align-items-center position-relative">
+                    <label class="col-sm-4 col-form-label fw-semibold">Confirm Password</label>
+                    <div class="col-sm-8 position-relative">
+                        <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Re-enter password" required>
+                        <i class="fa fa-eye toggle-password position-absolute end-0 top-50 translate-middle-y me-3"
+                           style="cursor: pointer;" data-target="confirm_password"></i>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg fw-semibold px-5">Register</button>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="{% url 'home' %}" class="text-decoration-none">
+                        <i class="fa fa-home me-1"></i> Back to Home
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+{% comment %} <script>
+document.querySelectorAll('.toggle-password').forEach(icon => {
+    icon.addEventListener('click', function () {
+        const targetId = this.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.classList.remove('fa-eye');
+            this.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            this.classList.remove('fa-eye-slash');
+            this.classList.add('fa-eye');
+        }
+    });
+});
+</script> {% endcomment %}
+
 {% endblock main-content %}
