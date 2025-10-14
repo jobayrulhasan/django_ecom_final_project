@@ -6,10 +6,19 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.decorators import login_required
+from django.views import View
+from .models import Product
 
 # Create your views here.
 def show_home_page(request):
-    return render(request, 'Shop/home.html')
+    accessories = Product.objects.filter(category = 'Acc')
+    electronics_computer = Product.objects.filter(category = 'EC')
+    laptops_desktops = Product.objects.filter(category = 'LD')
+    mobiles_tablets = Product.objects.filter(category = 'MT')
+    SmartPhone_smart_TV = Product.objects.filter(category = 'SSTV')
+    return render(request, 'Shop/home.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV}) 
+
+
 
 def show_shop_page(request):
     return render(request, 'Shop/shop.html')
@@ -58,7 +67,7 @@ def login_view(request):
         user = authenticate(request, username=user_name, password=user_password)
         if user is not None:
             login(request, user)
-            messages.success(request, "Login successful!")
+            #messages.success(request, "Login successful!")
             return redirect('/')  # redirect to your home/dashboard page
         else:
             messages.error(request, "Invalid username or password.")
@@ -81,12 +90,12 @@ def change_password(request):
         # Check old password
         if not request.user.check_password(old_password):
             messages.error(request, 'Old password is incorrect.')
-            return redirect('Shop/password_change.html')
+            return redirect('change_password')
 
         # Confirm new passwords match
         if new_password != confirm_password:
             messages.error(request, 'New password and confirm password do not match.')
-            return redirect('Shop/password_change.html')
+            return redirect('change_password')
 
         # Validate new password strength using Django's validators
         try:
@@ -95,7 +104,7 @@ def change_password(request):
             # e.messages is a list of human-friendly messages
             for msg in e.messages:
                 messages.error(request, msg)
-            return redirect('Shop/password_change.html')
+            return redirect('change_password')
 
         # Set new password (securely hashes)
         request.user.set_password(new_password)
@@ -104,8 +113,8 @@ def change_password(request):
         # Keep the user logged in after password change
         update_session_auth_hash(request, request.user)
 
-        messages.success(request, 'Your password has been changed successfully.')
-        return redirect('Shop/home.html')  # or any other page you want
+        # messages.success(request, 'Your password has been changed successfully.')
+        return redirect('/')
 
     # GET request -> show form
     return render(request, 'Shop/password_change.html')
