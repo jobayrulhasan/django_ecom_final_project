@@ -124,3 +124,20 @@ def change_password(request):
 
     # GET request -> show form
     return render(request, 'Shop/password_change.html')
+
+
+# best selling page
+def show_bestselling_page(request):
+    return render(request, 'Shop/bestseller.html')
+
+# show cart page
+def show_cart_page(request):
+    return render(request, 'Shop/cart.html')
+
+# show checkout page
+def show_cheackout_page(request):
+    return render(request, 'Shop/cheackout.html')
+
+# show checkout page
+def show_contact_page(request):
+    return render(request, 'Shop/contact.html')
