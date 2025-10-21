@@ -25,4 +25,10 @@ urlpatterns = [
     path('logout/', views.user_logout, name='userLogout'),
     # Password change
     path('change-password/', views.change_password, name='change_password'),
+    # product details
+    path('product/<int:pk>', views.ProductDetailsView.as_view(), name= 'show_product_details'),
+    #Add to cart
+    path('addcart/', views.add_to_cart, name='addtocart'),
+    # show cart
+    # path('cart/', views.show_cart, name = 'showCart'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
