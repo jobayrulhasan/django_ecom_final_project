@@ -168,25 +168,7 @@ def show_cart(request):
     if request.user.is_authenticated:
         username = request.user
         cart = Cart.objects.filter(user=username)
-        amount = 0
-        shipping_amount = 0
-        cart_product = [p for p in cart]  # no need to filter again
-
-        if cart_product:   # if cart is not empty
-            for p in cart_product:
-                temp_amount = p.quantity * p.product.discounted_price
-                amount += temp_amount
-                # condition for shipping
-                if amount > 0:
-                    shipping_amount = 100
-                else:
-                    shipping_amount = 0
-            total_amount = amount + shipping_amount
-            return render(request, 'Shop/addtocart.html', {
-                'carts': cart,
-                'totalamount': total_amount,
-                'amount': amount,
-                'shippingamount':shipping_amount
-            })
-        else:   # if cart is empty
-            return render(request, 'Shop/emptycart.html')
+    
+        return render(request, 'Shop/cart.html', {'carts': cart})
+    else:   # if cart is empty
+        return render(request, 'Shop/emptycart.html')

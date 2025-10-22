@@ -142,20 +142,20 @@
 
 
     // Product Quantity
-    $('.quantity button').on('click', function () {
-        var button = $(this);
-        var oldValue = button.parent().parent().find('input').val();
-        if (button.hasClass('btn-plus')) {
-            var newVal = parseFloat(oldValue) + 1;
-        } else {
-            if (oldValue > 0) {
-                var newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 0;
-            }
-        }
-        button.parent().parent().find('input').val(newVal);
-    });
+    // $('.quantity button').on('click', function () {
+    //     var button = $(this);
+    //     var oldValue = button.parent().parent().find('input').val();
+    //     if (button.hasClass('btn-plus')) {
+    //         var newVal = parseFloat(oldValue) + 1;
+    //     } else {
+    //         if (oldValue > 0) {
+    //             var newVal = parseFloat(oldValue) - 1;
+    //         } else {
+    //             newVal = 0;
+    //         }
+    //     }
+    //     button.parent().parent().find('input').val(newVal);
+    // });
 
 
     
@@ -171,10 +171,6 @@
         $('html, body').animate({scrollTop: 0}, 1500, 'easeInOutExpo');
         return false;
     });
-
-
-   
-
 })(jQuery);
 
 // password show and hide
@@ -192,3 +188,24 @@
             }
         });
     });
+
+
+//cart value plus
+$(".plus-cart").click(function () {
+  var id = $(this).attr("productid").toString();
+  var eml = this.parentNode.children[2];
+  //console.log(id);
+  $.ajax({
+    type: "GET",
+    url: "/pluscart",
+    data: {
+      prod_id: id,
+    },
+    success: function (data) {
+      eml.innerText = data.quantity;
+      document.getElementById("amount").innerText = data.amount;
+      document.getElementById("totalamount").innerText = data.totalamount;
+      document.getElementById("shipping_amount").innerText = data.shippingAmount;
+    },
+  });
+});
