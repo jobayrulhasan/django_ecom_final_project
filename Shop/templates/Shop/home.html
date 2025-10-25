@@ -637,11 +637,11 @@
                     consectetur?</p>
             </div>
             <div class="row g-4">
+                {% for topS in top_salling_product %}
                 <div class="col-md-6 col-lg-6 col-xl-4 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="products-mini-item border">
                         <div class="row g-0">
                             <div class="col-5">
-                                {% for topS in top_salling_product %}
                                 <div class="products-mini-img border-end h-100">
                                     <img src="{{topS.product_image.url}}" class="img-fluid w-100 h-100" alt="Image">
                                     <div class="products-mini-icon rounded-circle bg-primary">
@@ -658,7 +658,6 @@
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
                         <div class="products-mini-add border p-3">
                             <a href="#" class="btn btn-primary border-secondary rounded-pill py-2 px-4"><i
                                     class="fas fa-shopping-cart me-2"></i> Add To Cart</a>
@@ -674,6 +673,7 @@
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>

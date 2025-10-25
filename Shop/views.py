@@ -128,9 +128,22 @@ def change_password(request):
     return render(request, 'Shop/password_change.html')
 
 
+
 # best selling page
 def show_bestselling_page(request):
-    return render(request, 'Shop/bestseller.html')
+    accessories = Product.objects.filter(category = 'Acc')
+    electronics_computer = Product.objects.filter(category = 'EC')
+    laptops_desktops = Product.objects.filter(category = 'LD')
+    mobiles_tablets = Product.objects.filter(category = 'MT')
+    SmartPhone_smart_TV = Product.objects.filter(category = 'SSTV')
+    all_products = Product.objects.all()
+    
+    new_arrival = Product.objects.filter(product_status = 'New')
+    sale_product = Product.objects.filter(product_status = 'Sale')
+    feature_product = Product.objects.filter(product_status = 'Feature')
+    top_salling_product = Product.objects.filter(product_status = 'Top Selling')
+    
+    return render(request, 'Shop/bestseller.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV, 'all_products':all_products, 'new_arrival': new_arrival, 'sale_product': sale_product, 'feature_product': feature_product, 'top_salling_product': top_salling_product})
 
 # show cart page
 def show_cart_page(request):
