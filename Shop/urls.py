@@ -12,7 +12,7 @@ urlpatterns = [
     # best selling page
     path('bestselling/', views.show_bestselling_page, name = 'best_selling'),
     # cart page
-    path('cart/', views.show_cart_page, name = 'cart_page'),
+    # path('cart/', views.show_cart_page, name = 'cart_page'),
     # cheackout page
     path('cheackout/', views.show_cheackout_page, name = 'cheackout_page'),
     # show contact page
@@ -30,5 +30,8 @@ urlpatterns = [
     #Add to cart
     path('addcart/', views.add_to_cart, name='addtocart'),
     # show cart
-    # path('cart/', views.show_cart, name = 'showCart'),
+    path('cart/', views.show_cart, name = 'showinCart'),
+    
+    # cart value plus
+    path('pluscart/', views.plus_cart),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

@@ -470,10 +470,10 @@
             <div class="productList-carousel owl-carousel pt-4 wow fadeInUp" data-wow-delay="0.3s">
                 {% comment %} slider - 1 {% endcomment %}
                 <div class="productImg-carousel owl-carousel productList-item">
+                    {% for acc in accessories %}
                     <div class="productImg-item products-mini-item border">
                         <div class="row g-0">
                             <div class="col-5">
-                                {% for acc in accessories %}
                                 <div class="products-mini-img border-end h-100">
                                     <img src="{{acc.product_image.url}}" class="img-fluid w-100 h-100" alt="Image">
                                     <div class="products-mini-icon rounded-circle bg-primary">
@@ -489,7 +489,6 @@
                                     <span class="text-primary fs-5">${{acc.discounted_price}}</span>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
                         <div class="products-mini-add border p-3">
                             <a href="#" class="btn btn-primary border-secondary rounded-pill py-2 px-4"><i
@@ -505,13 +504,15 @@
                             </div>
                         </div>
                     </div>
+                     {% endfor %}
                 </div>
                 {% comment %} slider - 2 {% endcomment %}
                 <div class="productImg-carousel owl-carousel productList-item">
+                    {% for ec in electronics_computer %}
                     <div class="productImg-item products-mini-item border">
                         <div class="row g-0">
                             <div class="col-5">
-                                {% for ec in electronics_computer %}
+                               
                                 <div class="products-mini-img border-end h-100">
                                     <img src="{{ec.product_image.url}}" class="img-fluid w-100 h-100" alt="Image">
                                     <div class="products-mini-icon rounded-circle bg-primary">
@@ -528,7 +529,6 @@
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
                         <div class="products-mini-add border p-3">
                             <a href="#" class="btn btn-primary border-secondary rounded-pill py-2 px-4"><i
                                     class="fas fa-shopping-cart me-2"></i> Add To Cart</a>
@@ -543,13 +543,14 @@
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
                 {% comment %} slider - 3 {% endcomment %}
                 <div class="productImg-carousel owl-carousel productList-item">
+                    {% for ld in laptops_desktops %}
                     <div class="productImg-item products-mini-item border">
                         <div class="row g-0">
                             <div class="col-5">
-                                {% for ld in laptops_desktops %}
                                 <div class="products-mini-img border-end h-100">
                                     <img src="{{ld.product_image.url}}" class="img-fluid w-100 h-100" alt="Image">
                                     <div class="products-mini-icon rounded-circle bg-primary">
@@ -565,7 +566,6 @@
                                     <span class="text-primary fs-5">${{ld.discounted_price}}</span>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
                         <div class="products-mini-add border p-3">
                             <a href="#" class="btn btn-primary border-secondary rounded-pill py-2 px-4"><i
@@ -581,13 +581,14 @@
                             </div>
                         </div>
                     </div>
+                     {% endfor %}
                 </div>
                 {% comment %} slider - 4 {% endcomment %}
                 <div class="productImg-carousel owl-carousel productList-item">
+                    {% for mt in mobiles_tablets %}
                     <div class="productImg-item products-mini-item border">
                         <div class="row g-0">
                             <div class="col-5">
-                                {% for mt in mobiles_tablets %}
                                 <div class="products-mini-img border-end h-100">
                                     <img src="{{mt.product_image.url}}" class="img-fluid w-100 h-100" alt="Image">
                                     <div class="products-mini-icon rounded-circle bg-primary">
@@ -603,7 +604,6 @@
                                     <span class="text-primary fs-5">${{mt.discounted_price}}</span>
                                 </div>
                             </div>
-                            {% endfor %}
                         </div>
                         <div class="products-mini-add border p-3">
                             <a href="#" class="btn btn-primary border-secondary rounded-pill py-2 px-4"><i
@@ -619,6 +619,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

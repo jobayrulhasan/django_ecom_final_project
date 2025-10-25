@@ -190,22 +190,31 @@
     });
 
 
-//cart value plus
-$(".plus-cart").click(function () {
+// plus button
+$(".btn-plus").click(function () {
   var id = $(this).attr("productid").toString();
-  var eml = this.parentNode.children[2];
-  //console.log(id);
+
+  // robustly find the quantity input inside the same .input-group
+  var $input = $(this).closest(".input-group").find("input[type='text']");
+
   $.ajax({
     type: "GET",
     url: "/pluscart",
-    data: {
-      prod_id: id,
-    },
+    data: { prod_id: id },
     success: function (data) {
-      eml.innerText = data.quantity;
-      document.getElementById("amount").innerText = data.amount;
-      document.getElementById("totalamount").innerText = data.totalamount;
-      document.getElementById("shipping_amount").innerText = data.shippingAmount;
+      // update the input's value safely
+      $input.val(data.quantity);
+
+      // update cart totals
+      $("#amount").text(data.amount);
+      $("#totalamount").text(data.totalamount);
+      $("#shipping_amount").text(data.shippingAmount);
+
+      // update per-product total (make sure <p id="total_{{id}}"> exists)
+      $("#total_" + id).text("$ " + data.productTotal);
     },
+    error: function (xhr, status, err) {
+      console.error("pluscart error:", err);
+    }
   });
 });
