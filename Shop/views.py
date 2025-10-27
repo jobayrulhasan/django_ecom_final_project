@@ -10,6 +10,7 @@ from django.views import View
 from .models import Product, Cart
 from django.db.models import Q
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 # Create your views here.
 def show_home_page(request):
@@ -24,12 +25,30 @@ def show_home_page(request):
     sale_product = Product.objects.filter(product_status = 'Sale')
     feature_product = Product.objects.filter(product_status = 'Feature')
     top_salling_product = Product.objects.filter(product_status = 'Top Selling')
-    
-    return render(request, 'Shop/home.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV, 'all_products':all_products, 'new_arrival': new_arrival, 'sale_product': sale_product, 'feature_product': feature_product, 'top_salling_product': top_salling_product})
+    totalItem = 0
+    if request.user.is_authenticated:
+        totalItem = len(Cart.objects.filter(user = request.user)) 
+        
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+      
+    return render(request, 'Shop/home.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV, 'all_products':all_products, 'new_arrival': new_arrival, 'sale_product': sale_product, 'feature_product': feature_product, 'top_salling_product': top_salling_product, 'totalItem':totalItem, 'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len })
 
 
+# Shop page
 def show_shop_page(request):
-    return render(request, 'Shop/shop.html')
+    all_products = Product.objects.all().order_by('id')  # Optional ordering
+    paginator = Paginator(all_products, 6)  # Show 6 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    totalItem = 0
+    if request.user.is_authenticated:
+        totalItem = len(Cart.objects.filter(user = request.user))
+    return render(request, 'Shop/shop.html', {"page_obj": page_obj, "totalItem": totalItem})
 
 def show_single_page(request):
     return render(request, 'Shop/single.html')
@@ -143,25 +162,45 @@ def show_bestselling_page(request):
     feature_product = Product.objects.filter(product_status = 'Feature')
     top_salling_product = Product.objects.filter(product_status = 'Top Selling')
     
-    return render(request, 'Shop/bestseller.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV, 'all_products':all_products, 'new_arrival': new_arrival, 'sale_product': sale_product, 'feature_product': feature_product, 'top_salling_product': top_salling_product})
+    totalItem = 0
+    if request.user.is_authenticated:
+        totalItem = len(Cart.objects.filter(user = request.user))
+        
+    return render(request, 'Shop/bestseller.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV, 'all_products':all_products, 'new_arrival': new_arrival, 'sale_product': sale_product, 'feature_product': feature_product, 'top_salling_product': top_salling_product, 'totalItem': totalItem})
 
 # show cart page
 def show_cart_page(request):
-    return render(request, 'Shop/cart.html')
+    totalItem = 0
+    if request.user.is_authenticated:
+      totalItem = len(Cart.objects.filter(user = request.user))
+    return render(request, 'Shop/cart.html', {'totalItem': totalItem})
 
 # show checkout page
 def show_cheackout_page(request):
-    return render(request, 'Shop/cheackout.html')
+    totalItem = 0
+    if request.user.is_authenticated:
+      totalItem = len(Cart.objects.filter(user = request.user))
+    return render(request, 'Shop/cheackout.html', {'totalItem': totalItem})
 
 # show checkout page
 def show_contact_page(request):
-    return render(request, 'Shop/contact.html')
+    totalItem = 0
+    if request.user.is_authenticated:
+      totalItem = len(Cart.objects.filter(user = request.user))
+    return render(request, 'Shop/contact.html', {'totalItem': totalItem})
 
 # product details
 class ProductDetailsView(View):
     def get(self, request, pk):
         productDetails = Product.objects.get(pk=pk)
-        return render(request, 'Shop/productdetails.html', {'productD': productDetails})
+        item_already_in_cart = False # this portion is added for prevent duplicate value in cart
+        if request.user.is_authenticated:
+            item_already_in_cart = Cart.objects.filter(Q(product = productDetails.id) & Q(user = request.user))
+            
+        totalItem = 0
+        if request.user.is_authenticated:
+            totalItem = len(Cart.objects.filter(user = request.user))
+        return render(request, 'Shop/productdetails.html', {'productD': productDetails, "item_already_in_cart": item_already_in_cart, 'totalItem': totalItem})
     
 # Add to card
 def add_to_cart(request):

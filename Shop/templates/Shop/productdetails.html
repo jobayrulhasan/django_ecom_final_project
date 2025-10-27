@@ -13,11 +13,14 @@
             <hr>
             <p>Product Description: {{productD.description}}</p> <br>
             <h4>Tk. {{productD.discounted_price}} <small class="fw-light text-decoration-line-through">{{productD.selling_price}}</small></h4> <br>
-            
+            {% if item_already_in_cart %}
+              <a href="{% url 'showinCart' %}" class="btn btn-warning  px-5 py-2 ms-4">Go to cart</a>
+            {% else %}
             <form action="/addcart" class="d-inline">
                 <input type="hidden" name="product_id" value="{{productD.id}}" id="product_id">
                 <button type="Submit" class="btn btn-primary border-secondary rounded-pill py-2 px-4 mb-4"><i class="fas fa-shopping-cart me-2"></i> Add To Cart</button>
             </form>
+            {% endif %}
             <a href="" class="btn btn-secondary border-secondary rounded-pill py-2 px-4 mb-4"><i class="bi bi-bag"></i> Buy Now</a>
             <h5 class="mt-5">Available Offers</h5>
             <ul>
