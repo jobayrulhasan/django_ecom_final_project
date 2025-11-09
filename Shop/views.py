@@ -48,10 +48,25 @@ def show_shop_page(request):
     totalItem = 0
     if request.user.is_authenticated:
         totalItem = len(Cart.objects.filter(user = request.user))
-    return render(request, 'Shop/shop.html', {"page_obj": page_obj, "totalItem": totalItem})
+        
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+    
+    return render(request, 'Shop/shop.html', {"page_obj": page_obj, "totalItem": totalItem, 'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len})
 
 def show_single_page(request):
-    return render(request, 'Shop/single.html')
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+    
+    return render(request, 'Shop/single.html', {'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len})
 
 # customer registration
 def registration(request):
@@ -166,28 +181,62 @@ def show_bestselling_page(request):
     if request.user.is_authenticated:
         totalItem = len(Cart.objects.filter(user = request.user))
         
-    return render(request, 'Shop/bestseller.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV, 'all_products':all_products, 'new_arrival': new_arrival, 'sale_product': sale_product, 'feature_product': feature_product, 'top_salling_product': top_salling_product, 'totalItem': totalItem})
+        
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+    
+    return render(request, 'Shop/bestseller.html', {'accessories': accessories, 'electronics_computer':electronics_computer, 'laptops_desktops':laptops_desktops, 'mobiles_tablets':mobiles_tablets, 'SmartPhone_smart_TV': SmartPhone_smart_TV, 'all_products':all_products, 'new_arrival': new_arrival, 'sale_product': sale_product, 'feature_product': feature_product, 'top_salling_product': top_salling_product, 'totalItem': totalItem, 'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len})
 
 # show cart page
 def show_cart_page(request):
     totalItem = 0
     if request.user.is_authenticated:
       totalItem = len(Cart.objects.filter(user = request.user))
-    return render(request, 'Shop/cart.html', {'totalItem': totalItem})
+      
+      
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+    
+    return render(request, 'Shop/cart.html', {'totalItem': totalItem, 'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len})
 
 # show checkout page
 def show_cheackout_page(request):
     totalItem = 0
     if request.user.is_authenticated:
       totalItem = len(Cart.objects.filter(user = request.user))
-    return render(request, 'Shop/cheackout.html', {'totalItem': totalItem})
+      
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+    
+    return render(request, 'Shop/cheackout.html', {'totalItem': totalItem, 'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len})
 
 # show checkout page
 def show_contact_page(request):
     totalItem = 0
     if request.user.is_authenticated:
       totalItem = len(Cart.objects.filter(user = request.user))
-    return render(request, 'Shop/contact.html', {'totalItem': totalItem})
+      
+      
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+    
+    return render(request, 'Shop/contact.html', {'totalItem': totalItem, 'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len})
 
 # product details
 class ProductDetailsView(View):
@@ -214,7 +263,14 @@ def add_to_cart(request):
 
 # show cart page
 def show_cart_page(request):
-    return render(request, 'Shop/cart.html')
+    # show category wise product length
+    accessories_len = len(Product.objects.filter(category = 'Acc'))
+    electronics_computer_len = len(Product.objects.filter(category = 'EC'))
+    laptops_desktops_len = len(Product.objects.filter(category = 'LD'))
+    mobiles_tablets_len = len(Product.objects.filter(category = 'MT'))
+    SmartPhone_smart_TV_len = len(Product.objects.filter(category = 'SSTV'))
+    
+    return render(request, 'Shop/cart.html', {'accessories_len':accessories_len, 'electronics_computer_len': electronics_computer_len, 'laptops_desktops_len': laptops_desktops_len, 'mobiles_tablets_len': mobiles_tablets_len, 'SmartPhone_smart_TV_len':SmartPhone_smart_TV_len})
 
 
 # show in cart
