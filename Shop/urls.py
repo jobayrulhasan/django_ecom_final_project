@@ -31,6 +31,7 @@ urlpatterns = [
     path('addcart/', views.add_to_cart, name='addtocart'),
     # show cart
     path('cart/', views.show_cart, name = 'showinCart'),
+    path('remove_cart_value/', views.remove_cart, name = 'remove_cart_value'),
     
     # cart value plus
     path('pluscart/', views.plus_cart),

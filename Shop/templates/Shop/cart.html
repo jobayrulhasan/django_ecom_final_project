@@ -62,7 +62,7 @@
                                 <p class="mb-0 py-4 total" id="total_{{cart.product.id}}">${{cart.product.discounted_price}}</p>
                             </td>
                             <td class="py-4">
-                                <button class="btn btn-md rounded-circle bg-light border">
+                                <button class="btn btn-md rounded-circle bg-light border remove_cart" productid="{{cart.product.id}}">
                                     <i class="fa fa-times text-danger"></i>
                                 </button>
                             </td>
@@ -88,7 +88,7 @@
                             <div class="d-flex justify-content-between">
                                 <h5 class="mb-0 me-4">Shipping</h5>
                                 <div>
-                                    <p class="mb-0">Flat rate: $ {{shippingamount}}</p>
+                                    <p class="mb-0">Flat rate: $ {{shippingAmount}}</p>
                                 </div>
                             </div>
                             <p class="mb-0 text-end">Shipping to Ukraine.</p>

@@ -190,31 +190,43 @@
     });
 
 
-// plus button
-$(".btn-plus").click(function () {
+//cart plus
+$(".plus-cart").click(function () {
   var id = $(this).attr("productid").toString();
-
-  // robustly find the quantity input inside the same .input-group
-  var $input = $(this).closest(".input-group").find("input[type='text']");
-
+  var eml = this.parentNode.children[2];
+//   console.log(id);
   $.ajax({
     type: "GET",
     url: "/pluscart",
-    data: { prod_id: id },
-    success: function (data) {
-      // update the input's value safely
-      $input.val(data.quantity);
-
-      // update cart totals
-      $("#amount").text(data.amount);
-      $("#totalamount").text(data.totalamount);
-      $("#shipping_amount").text(data.shippingAmount);
-
-      // update per-product total (make sure <p id="total_{{id}}"> exists)
-      $("#total_" + id).text("$ " + data.productTotal);
+    data: {
+      prod_id: id,
     },
-    error: function (xhr, status, err) {
-      console.error("pluscart error:", err);
-    }
+    success: function (data) {
+        console.log(data.amount);
+      eml.innerText = data.quantity;
+      document.getElementById("amount").innerText = data.amount;
+      document.getElementById("totalamount").innerText = data.totalamount;
+      document.getElementById("shippingAmount").innerText = data.shippingAmount;
+    },
+  });
+});
+
+
+//Remove cart product
+$(".remove_cart").click(function () {
+  var id = $(this).attr("productid").toString();
+  var eml = this;
+  console.log(id);
+  $.ajax({
+    type: "GET",
+    url: "/remove_cart_value",
+    data: {
+      prod_id: id,
+    },
+    success: function (data) {
+      document.getElementById("amount").innerText = data.amount;
+      document.getElementById("totalamount").innerText = data.totalamount;
+      eml.parentNode.parentNode.parentNode.parentNode.remove();
+    },
   });
 });

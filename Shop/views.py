@@ -229,6 +229,7 @@ def show_contact_page(request):
       totalItem = len(Cart.objects.filter(user = request.user))
       
       
+      
     # show category wise product length
     accessories_len = len(Product.objects.filter(category = 'Acc'))
     electronics_computer_len = len(Product.objects.filter(category = 'EC'))
@@ -355,3 +356,30 @@ def plus_cart(request):
             'productTotal': product_total
         }
         return JsonResponse(data)
+    
+    
+    # remove cart value
+def remove_cart(request):
+    if request.method == 'GET':
+        product_id = request.GET['prod_id']
+        print(product_id)
+        c = Cart.objects.get(Q(product = product_id) & Q(user = request.user))
+        c.delete()
+        
+        amount = 0
+        shipping_amount = 0
+        cart_product = [p for p in Cart.objects.all() if p.user==request.user]
+        for p in cart_product:
+            tempamount = (p.quantity * p.product.discounted_price)
+            amount += tempamount
+            if amount > 0:
+                 shipping_amount = 100
+            else:
+                 shipping_amount = 0
+            totalamount = amount + shipping_amount
+            
+    data = {
+    'amount': amount,
+    'totalamount':totalamount,
+    }
+    return JsonResponse(data)
