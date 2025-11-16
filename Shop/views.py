@@ -324,50 +324,49 @@ def show_cart(request):
         
         
 # plus in cart
+# def plus_cart(request):
+#     if request.method == 'GET':
+#         product_id = request.GET['prod_id']
+#         c = Cart.objects.get(Q(product=product_id) & Q(user=request.user))
+#         c.quantity += 1
+#         c.save()
+
+#         amount = 0
+#         shipping_amount = 100
+#         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+#         for p in cart_product:
+#             tempamount = (p.quantity * p.product.discounted_price)
+#             amount += tempamount
+
+#         if amount > 0:
+#             shipping_amount = 100
+#         else:
+#             shipping_amount = 0
+
+#         totalamount = amount + shipping_amount
+
+#         # Add this 👇 line total for current product
+#         product_total = c.quantity * c.product.discounted_price
+
+#         data = {
+#             'quantity': c.quantity,
+#             'amount': amount,
+#             'totalamount': totalamount,
+#             'shippingAmount': shipping_amount,
+#             'productTotal': product_total
+#         }
+#         return JsonResponse(data)
+
+
 def plus_cart(request):
     if request.method == 'GET':
         product_id = request.GET['prod_id']
-        c = Cart.objects.get(Q(product=product_id) & Q(user=request.user))
-        c.quantity += 1
-        c.save()
-
-        amount = 0
-        shipping_amount = 100
-        cart_product = [p for p in Cart.objects.all() if p.user == request.user]
-        for p in cart_product:
-            tempamount = (p.quantity * p.product.discounted_price)
-            amount += tempamount
-
-        if amount > 0:
-            shipping_amount = 100
-        else:
-            shipping_amount = 0
-
-        totalamount = amount + shipping_amount
-
-        # Add this 👇 line total for current product
-        product_total = c.quantity * c.product.discounted_price
-
-        data = {
-            'quantity': c.quantity,
-            'amount': amount,
-            'totalamount': totalamount,
-            'shippingAmount': shipping_amount,
-            'productTotal': product_total
-        }
-        return JsonResponse(data)
-    
-    
-    # remove cart value
-def remove_cart(request):
-    if request.method == 'GET':
-        product_id = request.GET['prod_id']
-        print(product_id)
         c = Cart.objects.get(Q(product = product_id) & Q(user = request.user))
-        c.delete()
+        c.quantity += 1
+        c.save() # first we have to save the incremented value
         
         amount = 0
-        shipping_amount = 0
+        shipping_amount = 100
         cart_product = [p for p in Cart.objects.all() if p.user==request.user]
         for p in cart_product:
             tempamount = (p.quantity * p.product.discounted_price)
@@ -376,10 +375,43 @@ def remove_cart(request):
                  shipping_amount = 100
             else:
                  shipping_amount = 0
+                 
             totalamount = amount + shipping_amount
             
     data = {
+    'quantity': c.quantity,
     'amount': amount,
     'totalamount':totalamount,
+    'shippingAmount': shipping_amount
     }
     return JsonResponse(data)
+    
+    
+# remove cart value
+def remove_cart(request):
+    if request.method == 'GET':
+        product_id = request.GET.get('prod_id')
+
+        Cart.objects.filter(product=product_id, user=request.user).delete()
+
+        # Get user-specific cart items
+        cart_items = Cart.objects.filter(user=request.user)
+
+        amount = 0
+        for item in cart_items:
+            amount += item.quantity * item.product.discounted_price
+        
+        shipping_amount = 100 if amount > 0 else 0
+        totalamount = amount + shipping_amount
+
+        data = {
+            'amount': amount,
+            'totalamount': totalamount,
+            'shippingamount': shipping_amount
+        }
+
+        return JsonResponse(data)
+    
+# show empty cart
+def showEmptyCart(request):
+    return render(request, 'Shop/emptycart.html')

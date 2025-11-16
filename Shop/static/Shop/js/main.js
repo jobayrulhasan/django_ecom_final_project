@@ -194,7 +194,7 @@
 $(".plus-cart").click(function () {
   var id = $(this).attr("productid").toString();
   var eml = this.parentNode.children[2];
-//   console.log(id);
+  console.log(id);
   $.ajax({
     type: "GET",
     url: "/pluscart",
@@ -202,11 +202,11 @@ $(".plus-cart").click(function () {
       prod_id: id,
     },
     success: function (data) {
-        console.log(data.amount);
       eml.innerText = data.quantity;
-      document.getElementById("amount").innerText = data.amount;
-      document.getElementById("totalamount").innerText = data.totalamount;
-      document.getElementById("shippingAmount").innerText = data.shippingAmount;
+      document.getElementById("amount_").innerText = data.amount;
+      document.getElementById("totalamount_").innerText = data.totalamount;
+      document.getElementById("shippingamount_").innerText = data.shippingAmount;
+      document.getElementById("quantity").innerText = data.productTotal;
     },
   });
 });
@@ -217,6 +217,7 @@ $(".remove_cart").click(function () {
   var id = $(this).attr("productid").toString();
   var eml = this;
   console.log(id);
+
   $.ajax({
     type: "GET",
     url: "/remove_cart_value",
@@ -224,9 +225,19 @@ $(".remove_cart").click(function () {
       prod_id: id,
     },
     success: function (data) {
-      document.getElementById("amount").innerText = data.amount;
-      document.getElementById("totalamount").innerText = data.totalamount;
-      eml.parentNode.parentNode.parentNode.parentNode.remove();
+
+      // Update totals
+      document.getElementById("amount_").innerText = "$ " + data.amount;
+      document.getElementById("totalamount_").innerText = "$ " + data.totalamount;
+     document.getElementById("shippingamount_").innerText = "$ " + data.shippingamount;
+
+      // Remove the entire row <tr>
+      $(eml).closest("tr").remove();
+
+       // If amount becomes 0 → show empty cart
+      if (data.totalamount === 0) {
+        window.location.href = "/emptycart/";
+      }
     },
   });
 });
