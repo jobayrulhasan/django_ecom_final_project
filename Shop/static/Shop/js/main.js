@@ -193,7 +193,8 @@
 //cart plus
 $(".plus-cart").click(function () {
   var id = $(this).attr("productid").toString();
-  var eml = this.parentNode.children[2];
+   // find nearest input field
+   var quantityInput = $(this).closest(".quantity").find("input");
   console.log(id);
   $.ajax({
     type: "GET",
@@ -202,11 +203,31 @@ $(".plus-cart").click(function () {
       prod_id: id,
     },
     success: function (data) {
-      eml.innerText = data.quantity;
-      document.getElementById("amount_").innerText = data.amount;
-      document.getElementById("totalamount_").innerText = data.totalamount;
-      document.getElementById("shippingamount_").innerText = data.shippingAmount;
-      document.getElementById("quantity").innerText = data.productTotal;
+      // update only this product's quantity
+      quantityInput.val(data.quantity);
+      document.getElementById("amount_").innerText = "$ " + data.amount + ".0";
+      document.getElementById("totalamount_").innerText = "$ " + data.totalamount + ".0";
+      document.getElementById("shippingamount_").innerText = "Flat rate: $ " + data.shippingAmount;
+    },
+  });
+});
+
+//cart minus
+$(".minus-cart").click(function () {
+  var id = $(this).attr("productid").toString();
+  var quantityInput = $(this).closest(".quantity").find("input");
+  $.ajax({
+    type: "GET",
+    url: "/minuscart",
+    data: {
+      prod_id: id,
+    },
+    success: function (data) {
+      // update only this product's quantity
+      quantityInput.val(data.quantity);
+      document.getElementById("amount_").innerText = "$ " + data.amount + ".0";
+      document.getElementById("totalamount_").innerText = "$ " + data.totalamount + ".0";
+      document.getElementById("shippingamount_").innerText = "Flat rate: $ " + data.shippingAmount;
     },
   });
 });
@@ -229,7 +250,7 @@ $(".remove_cart").click(function () {
       // Update totals
       document.getElementById("amount_").innerText = "$ " + data.amount;
       document.getElementById("totalamount_").innerText = "$ " + data.totalamount;
-     document.getElementById("shippingamount_").innerText = "$ " + data.shippingamount;
+     document.getElementById("shippingamount_").innerText = "Flat rate: $ " + data.shippingamount;
 
       // Remove the entire row <tr>
       $(eml).closest("tr").remove();

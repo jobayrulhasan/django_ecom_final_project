@@ -35,5 +35,7 @@ urlpatterns = [
     
     # cart value plus
     path('pluscart/', views.plus_cart),
+    # cart value minus
+    path('minuscart/', views.minus_cart),
     path('emptycart/', views.showEmptyCart)
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

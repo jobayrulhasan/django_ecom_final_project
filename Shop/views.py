@@ -324,40 +324,6 @@ def show_cart(request):
         
         
 # plus in cart
-# def plus_cart(request):
-#     if request.method == 'GET':
-#         product_id = request.GET['prod_id']
-#         c = Cart.objects.get(Q(product=product_id) & Q(user=request.user))
-#         c.quantity += 1
-#         c.save()
-
-#         amount = 0
-#         shipping_amount = 100
-#         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
-#         for p in cart_product:
-#             tempamount = (p.quantity * p.product.discounted_price)
-#             amount += tempamount
-
-#         if amount > 0:
-#             shipping_amount = 100
-#         else:
-#             shipping_amount = 0
-
-#         totalamount = amount + shipping_amount
-
-#         # Add this 👇 line total for current product
-#         product_total = c.quantity * c.product.discounted_price
-
-#         data = {
-#             'quantity': c.quantity,
-#             'amount': amount,
-#             'totalamount': totalamount,
-#             'shippingAmount': shipping_amount,
-#             'productTotal': product_total
-#         }
-#         return JsonResponse(data)
-
-
 def plus_cart(request):
     if request.method == 'GET':
         product_id = request.GET['prod_id']
@@ -386,6 +352,34 @@ def plus_cart(request):
     }
     return JsonResponse(data)
     
+    
+# minus in cart
+def minus_cart(request):
+    if request.method == 'GET':
+        product_id = request.GET['prod_id']
+        c = Cart.objects.get(Q(product = product_id) & Q(user = request.user))
+        c.quantity -= 1
+        c.save() # first we have to save the incremented value
+        
+        amount = 0
+        shipping_amount = 0
+        cart_product = [p for p in Cart.objects.all() if p.user==request.user]
+        for p in cart_product:
+            tempamount = (p.quantity * p.product.discounted_price)
+            amount += tempamount
+            if amount > 0:
+                 shipping_amount = 100
+            else:
+                 shipping_amount = 0
+            totalamount = amount + shipping_amount
+            
+    data = {
+    'quantity': c.quantity,
+    'amount': amount,
+    'totalamount':totalamount,
+    'shippingAmount': shipping_amount
+    }
+    return JsonResponse(data)
     
 # remove cart value
 def remove_cart(request):
